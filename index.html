@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>برای روژان</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night-deep: #171022;
+    --night-mid: #2b1a36;
+    --plum: #3d2341;
+    --gold: #d9a85c;
+    --rose: #e3a98f;
+    --cream: #f4ece2;
+    --lavender: #a996b8;
+    --line: rgba(244,236,226,0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: radial-gradient(ellipse at 50% 20%, var(--plum) 0%, var(--night-mid) 45%, var(--night-deep) 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #sky {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .star {
+    position: absolute;
+    background: var(--cream);
+    border-radius: 50%;
+    opacity: 0.25;
+    animation: twinkle linear infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.12; }
+    50% { opacity: 0.75; }
+  }
+
+  .petal {
+    position: fixed;
+    bottom: -40px;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    font-size: 14px;
+    color: var(--rose);
+    animation: rise linear infinite;
+  }
+  @keyframes rise {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.5; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-110vh) translateX(var(--drift, 20px)) rotate(180deg); opacity: 0; }
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 28px;
+    text-align: center;
+  }
+
+  #cover {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  #cover.hide {
+    opacity: 0;
+    transform: scale(0.94);
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+  }
+
+  .seal {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .seal::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    opacity: 0.5;
+    animation: pulse-ring 3s ease-in-out infinite;
+  }
+  @keyframes pulse-ring {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.18); opacity: 0; }
+  }
+  .seal svg { width: 30px; height: 30px; }
+
+  .to-label {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    color: var(--lavender);
+    font-weight: 400;
+  }
+  .to-name {
+    font-size: clamp(32px, 9vw, 44px);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.3;
+  }
+  .tap-hint {
+    font-size: 14px;
+    color: var(--lavender);
+    font-weight: 300;
+    margin-top: 8px;
+    animation: breathe 2.6s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .open-btn {
+    margin-top: 6px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--cream);
+    font-family: inherit;
+    font-size: 15px;
+    padding: 12px 34px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .open-btn:active {
+    background: rgba(217,168,92,0.12);
+    border-color: var(--gold);
+  }
+
+  #letter {
+    display: none;
+    flex-direction: column;
+    gap: 22px;
+  }
+  #letter.show { display: flex; }
+
+  .line {
+    font-size: clamp(18px, 5vw, 21px);
+    line-height: 2.1;
+    font-weight: 300;
+    color: var(--cream);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: appear 0.9s ease forwards;
+  }
+  .line.first {
+    font-size: clamp(24px, 7vw, 30px);
+    font-weight: 500;
+    color: var(--gold);
+  }
+  @keyframes appear {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .signature {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--lavender);
+    font-weight: 300;
+    opacity: 0;
+    animation: appear 0.9s ease forwards;
+  }
+
+  .heart-wrap {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    animation: appear 0.9s ease forwards;
+  }
+  #heartBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+  #heartBtn svg {
+    width: 34px;
+    height: 34px;
+    animation: heartbeat 1.8s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.12); }
+    40% { transform: scale(1); }
+  }
+
+  .burst-heart {
+    position: fixed;
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 5;
+    animation: burst 1.6s ease-out forwards;
+  }
+  @keyframes burst {
+    0% { transform: translateY(0) scale(0.6); opacity: 1; }
+    100% { transform: translateY(-160px) scale(1.1); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star, .petal, .seal::before, .tap-hint, #heartBtn svg { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="sky"></div>
+
+<div class="stage">
+
+  <div id="cover">
+    <div class="seal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#d9a85c" stroke-width="1.4">
+        <path d="M12 20s-7-4.4-9.7-9C.6 7.8 2 4.8 5 4.2c2-0.4 3.6 0.6 4.7 2.2C10.8 4.8 12.4 3.8 14.4 4.2c3 0.6 4.4 3.6 2.7 6.8C14.4 15.6 12 20 12 20z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="to-label">برای</div>
+      <div class="to-name">روژان</div>
+    </div>
+    <button class="open-btn" onclick="openLetter()">بازش کن</button>
+    <div class="tap-hint">یه چیز کوچولو برات دارم</div>
+  </div>
+
+  <div id="letter">
+    <div class="line first" style="animation-delay:0.1s">روژان،</div>
+    <div class="line" style="animation-delay:0.9s">هر روز که چشمامو باز می‌کنم، اولین فکری که میاد سراغم تویی.</div>
+    <div class="line" style="animation-delay:1.9s">نمی‌دونم کِی و چجوری انقدر ساده نشستی وسط همه‌ی لحظه‌های خوبم،</div>
+    <div class="line" style="animation-delay:2.9s">ولی می‌دونم که دیگه این روزا بدون تو کامل نیستن.</div>
+    <div class="line" style="animation-delay:3.9s">فقط می‌خواستم همین‌جا، همین الان بهت بگم:</div>
+    <div class="line first" style="animation-delay:4.9s">دوستت دارم. ساده و واقعی.</div>
+    <div class="signature" style="animation-delay:5.8s">مال تو، همیشه</div>
+    <div class="heart-wrap" style="animation-delay:6.3s">
+      <button id="heartBtn" onclick="burstHearts(event)" aria-label="قلب">
+        <svg viewBox="0 0 24 24" fill="#e3a98f">
+          <path d="M12 21s-7.5-4.6-10.2-9.5C.2 8 1.7 4.6 5 3.8c2.2-0.5 4 0.6 5 2.4 1-1.8 2.8-2.9 5-2.4 3.3 0.8 4.8 4.2 3.2 7.7C19.5 16.4 12 21 12 21z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const sky = document.getElementById('sky');
+  const starCount = 55;
+  for (let i = 0; i < starCount; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2 + 1;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.top = Math.random() * 100 + 'vh';
+    s.style.animationDuration = (2 + Math.random() * 3) + 's';
+    s.style.animationDelay = (Math.random() * 3) + 's';
+    sky.appendChild(s);
+  }
+
+  function spawnPetal() {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.innerHTML = '❀';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+    p.style.animationDuration = (9 + Math.random() * 6) + 's';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 16000);
+  }
+  const petalInterval = setInterval(spawnPetal, 1400);
+
+  function openLetter() {
+    document.getElementById('cover').classList.add('hide');
+    setTimeout(() => {
+      document.getElementById('letter').classList.add('show');
+    }, 400);
+  }
+
+  function burstHearts(e) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const colors = ['#e3a98f', '#d9a85c', '#f4ece2'];
+    for (let i = 0; i < 10; i++) {
+      const h = document.createElement('div');
+      h.className = 'burst-heart';
+      h.textContent = '♥';
+      h.style.left = (rect.left + rect.width / 2 + (Math.random() * 60 - 30)) + 'px';
+      h.style.top = (rect.top) + 'px';
+      h.style.color = colors[Math.floor(Math.random() * colors.length)];
+      h.style.animationDelay = (Math.random() * 0.3) + 's';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 2000);
+    }
+  }
+</script>
+
+</body>
+      </html>
